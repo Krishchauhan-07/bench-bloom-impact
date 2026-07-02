@@ -14,16 +14,146 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      donations: {
+        Row: {
+          address: string
+          amount: number
+          bench_count: number
+          city: string
+          created_at: string
+          donation_id: string
+          email: string
+          id: string
+          mobile: string
+          name: string
+          nation: string
+          print_name: boolean
+          printed_name: string | null
+        }
+        Insert: {
+          address: string
+          amount: number
+          bench_count: number
+          city: string
+          created_at?: string
+          donation_id?: string
+          email: string
+          id?: string
+          mobile: string
+          name: string
+          nation: string
+          print_name?: boolean
+          printed_name?: string | null
+        }
+        Update: {
+          address?: string
+          amount?: number
+          bench_count?: number
+          city?: string
+          created_at?: string
+          donation_id?: string
+          email?: string
+          id?: string
+          mobile?: string
+          name?: string
+          nation?: string
+          print_name?: boolean
+          printed_name?: string | null
+        }
+        Relationships: []
+      }
+      impact_stats: {
+        Row: {
+          co2_saved_kg: number
+          goal_amount: number
+          id: string
+          kids_helped: number
+          raised_amount: number
+          total_benches: number
+          total_donors: number
+          total_plastic_kg: number
+          updated_at: string
+        }
+        Insert: {
+          co2_saved_kg?: number
+          goal_amount?: number
+          id?: string
+          kids_helped?: number
+          raised_amount?: number
+          total_benches?: number
+          total_donors?: number
+          total_plastic_kg?: number
+          updated_at?: string
+        }
+        Update: {
+          co2_saved_kg?: number
+          goal_amount?: number
+          id?: string
+          kids_helped?: number
+          raised_amount?: number
+          total_benches?: number
+          total_donors?: number
+          total_plastic_kg?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      donor_wall: {
+        Row: {
+          bench_count: number | null
+          created_at: string | null
+          donation_id: string | null
+          printed_name: string | null
+        }
+        Insert: {
+          bench_count?: number | null
+          created_at?: string | null
+          donation_id?: string | null
+          printed_name?: string | null
+        }
+        Update: {
+          bench_count?: number | null
+          created_at?: string | null
+          donation_id?: string | null
+          printed_name?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +280,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin"],
+    },
   },
 } as const
