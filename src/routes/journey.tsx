@@ -63,6 +63,24 @@ const allocationData = [
 ];
 
 function JourneyPage() {
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    const channel = supabase
+      .channel("journey-live")
+      .on("postgres_changes", { event: "*", schema: "public", table: "impact_stats" }, () => {
+        queryClient.invalidateQueries({ queryKey: ["impact"] });
+      })
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "donations" }, () => {
+        queryClient.invalidateQueries({ queryKey: ["impact"] });
+        queryClient.invalidateQueries({ queryKey: ["donor-wall"] });
+      })
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [queryClient]);
+
   const { data: impact, isLoading } = useQuery({
     queryKey: ["impact"],
     queryFn: async () => {
