@@ -19,6 +19,15 @@ import { Leaf, PackageCheck, School, Users, Wind } from "lucide-react";
 import { PageShell } from "@/components/site-chrome";
 import { supabase } from "@/integrations/supabase/client";
 import { Progress } from "@/components/ui/progress";
+import benchSide from "@/assets/bench-side.jpg.asset.json";
+import benchTop from "@/assets/bench-top.jpg.asset.json";
+
+const benchGallery = [
+  { src: benchSide.url, caption: "Bench tile — side profile showing the compressed recycled plastic layers." },
+  { src: benchTop.url, caption: "Finished bench top — made from ~12 kg of recycled plastic waste." },
+  { src: benchSide.url, caption: "Ready for installation in a school courtyard." },
+];
+
 
 export const Route = createFileRoute("/journey")({
   head: () => ({
