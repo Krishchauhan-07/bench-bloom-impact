@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.bump_impact_on_donation() FROM PUBLIC, anon, authenticated;

@@ -139,7 +139,17 @@ function DonatePage() {
                 />
               </StepWrap>
             )}
-
+            {step === 4 && donor && donationId && (
+              <StepWrap key="s4">
+                <StepThankYou
+                  donor={donor}
+                  amount={amount}
+                  benchCount={benchCount}
+                  donationId={donationId}
+                  printedName={printName ? (printedName.trim() || donor.name) : null}
+                />
+              </StepWrap>
+            )}
           </AnimatePresence>
         </div>
       </div>
