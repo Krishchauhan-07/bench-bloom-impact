@@ -1,18 +1,20 @@
 import { Link } from "@tanstack/react-router";
-import { Leaf } from "lucide-react";
 import type { ReactNode } from "react";
+import cctLogo from "@/assets/cct-logo.png.asset.json";
 
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-md">
       <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 py-3 sm:px-6">
         <Link to="/" className="group flex min-w-0 items-start gap-3">
-          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground shadow-soft transition-transform group-hover:rotate-12">
-            <Leaf className="h-5 w-5" />
-          </span>
+          <img
+            src={cctLogo.url}
+            alt="Chaitanya Charitable Trust logo"
+            className="h-12 w-12 shrink-0 object-contain transition-transform group-hover:scale-105 sm:h-[50px] sm:w-[50px]"
+          />
           <span className="min-w-0">
             <span className="block truncate font-display text-lg font-semibold tracking-tight">
-              PlasticBench
+              Chaitanya Charitable Trust
             </span>
             <span className="mt-0.5 hidden text-[11px] leading-snug text-muted-foreground sm:block">
               25-27, Shiv Park, Rajiv Nagar, Near Gau Seva Taluka Kanya Shala,
