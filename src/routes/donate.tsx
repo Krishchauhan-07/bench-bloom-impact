@@ -464,6 +464,30 @@ function StepPayment({
   onPay: () => void;
 }) {
   const [tab, setTab] = useState<"upi" | "card" | "netbanking">("upi");
+  const [upi, setUpi] = useState("demo@upi");
+  const [cardNo, setCardNo] = useState("4111 1111 1111 1111");
+  const [cardName, setCardName] = useState("");
+  const [cardExp, setCardExp] = useState("12/28");
+  const [cardCvv, setCardCvv] = useState("123");
+  const [bank, setBank] = useState("Demo Bank");
+
+  function handlePay() {
+    if (tab === "upi" && !upi.trim()) {
+      toast.error("Please enter a UPI ID.");
+      return;
+    }
+    if (tab === "card") {
+      if (!cardNo.trim() || !cardName.trim() || !cardExp.trim() || !cardCvv.trim()) {
+        toast.error("Please fill all card details.");
+        return;
+      }
+    }
+    if (tab === "netbanking" && !bank.trim()) {
+      toast.error("Please select a bank.");
+      return;
+    }
+    onPay();
+  }
 
   return (
     <div className="relative">
@@ -513,29 +537,29 @@ function StepPayment({
           {tab === "upi" && (
             <div className="space-y-3">
               <Label className="text-sm">UPI ID</Label>
-              <Input placeholder="yourname@upi" defaultValue="demo@upi" />
+              <Input placeholder="yourname@upi" value={upi} onChange={(e) => setUpi(e.target.value)} />
             </div>
           )}
           {tab === "card" && (
             <div className="grid grid-cols-2 gap-3">
               <Field label="Card number">
-                <Input placeholder="4111 1111 1111 1111" defaultValue="4111 1111 1111 1111" />
+                <Input placeholder="4111 1111 1111 1111" value={cardNo} onChange={(e) => setCardNo(e.target.value)} />
               </Field>
               <Field label="Name on card">
-                <Input placeholder="Aditi Rao" />
+                <Input placeholder="Aditi Rao" value={cardName} onChange={(e) => setCardName(e.target.value)} />
               </Field>
               <Field label="Expiry">
-                <Input placeholder="MM/YY" defaultValue="12/28" />
+                <Input placeholder="MM/YY" value={cardExp} onChange={(e) => setCardExp(e.target.value)} />
               </Field>
               <Field label="CVV">
-                <Input placeholder="123" defaultValue="123" />
+                <Input placeholder="123" value={cardCvv} onChange={(e) => setCardCvv(e.target.value)} />
               </Field>
             </div>
           )}
           {tab === "netbanking" && (
             <div>
               <Label className="text-sm">Select bank</Label>
-              <Input placeholder="HDFC / ICICI / SBI …" defaultValue="Demo Bank" className="mt-2" />
+              <Input placeholder="HDFC / ICICI / SBI …" value={bank} onChange={(e) => setBank(e.target.value)} className="mt-2" />
             </div>
           )}
 
@@ -555,9 +579,10 @@ function StepPayment({
         </Button>
         <Button
           size="lg"
-          onClick={onPay}
+          onClick={handlePay}
           disabled={isProcessing}
           className="rounded-full min-w-40"
+
         >
           {isProcessing ? (
             <>
