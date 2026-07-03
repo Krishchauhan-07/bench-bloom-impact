@@ -245,7 +245,35 @@ function JourneyPage() {
           </div>
         </div>
 
+        {/* Bench gallery */}
+        <div className="mt-10 rounded-3xl border border-border bg-card p-6 shadow-soft sm:p-8">
+          <h3 className="text-2xl">Our Benches</h3>
+          <p className="text-sm text-muted-foreground">
+            Real photos from our workshop — every bench is pressed from shredded, cleaned
+            post-consumer plastic.
+          </p>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {benchGallery.map((b, i) => (
+              <figure
+                key={i}
+                className="overflow-hidden rounded-2xl border border-border bg-secondary/30"
+              >
+                <img
+                  src={b.src}
+                  alt={b.caption}
+                  loading="lazy"
+                  className="aspect-square w-full object-cover"
+                />
+                <figcaption className="p-3 text-sm text-muted-foreground">
+                  {b.caption}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+
         {/* Donor wall */}
+
         <div className="mt-10 rounded-3xl border border-border bg-card p-6 shadow-soft sm:p-8">
           <h3 className="text-2xl">Donor wall</h3>
           <p className="text-sm text-muted-foreground">
