@@ -5,7 +5,7 @@ import { LogOut, Phone, UserCircle2 } from "lucide-react";
 
 import cctLogo from "@/assets/cct-logo.png.asset.json";
 import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
+
 
 function useAuthUser() {
   const [user, setUser] = useState<User | null>(null);
@@ -167,5 +167,3 @@ export function PageShell({ children }: { children: ReactNode }) {
   );
 }
 
-// Suppress unused import warning for Button when tree-shaken
-export { Button as _KeepButton };
