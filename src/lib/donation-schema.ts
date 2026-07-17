@@ -1,6 +1,10 @@
 import { z } from "zod";
 
-export const BENCH_PRICE = 500;
+// Impact conversion constants — update to real values later.
+export const KG_PER_RUPEE = 0.2; // ₹5 → 1 kg recycled
+export const COST_PER_BENCH = 500; // ₹500 → 1 bench
+
+export const BENCH_PRICE = COST_PER_BENCH;
 
 export const donorSchema = z.object({
   name: z.string().trim().min(2, "Please enter your full name").max(100),

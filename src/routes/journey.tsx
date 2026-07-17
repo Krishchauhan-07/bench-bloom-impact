@@ -292,23 +292,31 @@ function JourneyPage() {
         </div>
 
         {/* Donor wall */}
-
         <div className="mt-10 rounded-3xl border border-border bg-card p-6 shadow-soft sm:p-8">
           <h3 className="text-2xl">Donor wall</h3>
           <p className="text-sm text-muted-foreground">
-            Names engraved on benches, with donor consent.
+            Live from our donations ledger — updated the moment a donation lands.
           </p>
           {donorWall && donorWall.length > 0 ? (
-            <div className="mt-6 flex flex-wrap gap-2">
-              {donorWall.map((d) => (
-                <span
-                  key={d.donation_id}
-                  className="rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-sm text-primary"
-                >
-                  {d.printed_name}
-                </span>
-              ))}
-            </div>
+            <ul className="mt-6 divide-y divide-border/60">
+              {donorWall.map((d) => {
+                const amt = d.amount ?? 0;
+                const benches = d.bench_count ?? 0;
+                return (
+                  <li
+                    key={d.donation_id}
+                    className="flex flex-wrap items-baseline justify-between gap-2 py-3"
+                  >
+                    <span className="font-medium text-foreground">{d.printed_name}</span>
+                    <span className="text-sm text-muted-foreground">
+                      <span className="font-semibold text-primary">₹{amt.toLocaleString()}</span>
+                      {" · "}
+                      {benches} bench{benches === 1 ? "" : "es"} funded
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
           ) : (
             <p className="mt-6 text-sm text-muted-foreground">
               Be one of the first — donate a bench and choose to engrave your name.

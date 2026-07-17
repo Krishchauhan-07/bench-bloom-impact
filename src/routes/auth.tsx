@@ -10,7 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Lock } from "lucide-react";
 
 export const Route = createFileRoute("/auth")({
-  head: () => ({ meta: [{ title: "NGO Manager Login — PlasticBench" }] }),
+  head: () => ({ meta: [{ title: "Login or Sign up — PlasticBench" }] }),
   component: AuthPage,
 });
 
@@ -18,6 +18,8 @@ function AuthPage() {
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
   const [busy, setBusy] = useState(false);
   const navigate = useNavigate();
 
@@ -26,18 +28,38 @@ function AuthPage() {
     setBusy(true);
     try {
       if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
+        if (!fullName.trim()) throw new Error("Please enter your full name");
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
-          options: { emailRedirectTo: `${window.location.origin}/admin` },
+          options: {
+            emailRedirectTo: `${window.location.origin}/profile`,
+            data: { full_name: fullName.trim(), phone: phone.trim() },
+          },
         });
         if (error) throw error;
-        toast.success("Account created — you're signed in.");
+
+        // Insert profile row (requires an active session — auto-confirm or existing session)
+        const userId = data.user?.id;
+        if (userId && data.session) {
+          await supabase.from("profiles").upsert(
+            {
+              user_id: userId,
+              full_name: fullName.trim(),
+              email,
+              phone: phone.trim() || null,
+            },
+            { onConflict: "user_id" },
+          );
+        }
+        toast.success("Account created — welcome!");
+        navigate({ to: "/profile" });
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
+        toast.success("Signed in");
+        navigate({ to: "/profile" });
       }
-      navigate({ to: "/admin" });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Something went wrong");
     } finally {
@@ -51,16 +73,39 @@ function AuthPage() {
         <div className="mb-6 grid h-14 w-14 place-items-center rounded-2xl bg-primary text-primary-foreground shadow-elegant">
           <Lock className="h-6 w-6" />
         </div>
-        <h1 className="text-4xl">NGO Manager</h1>
+        <h1 className="text-4xl">{mode === "signin" ? "Welcome back" : "Create your account"}</h1>
         <p className="mt-2 text-center text-sm text-muted-foreground">
-          Sign in to update impact numbers and review donations. The first account created
-          becomes the admin.
+          {mode === "signin"
+            ? "Sign in to track donations and manage your profile."
+            : "Join PlasticBench — takes less than a minute."}
         </p>
 
         <form
           onSubmit={handleSubmit}
           className="mt-8 w-full space-y-4 rounded-3xl border border-border bg-card p-6 shadow-soft sm:p-8"
         >
+          {mode === "signup" && (
+            <>
+              <div>
+                <Label className="mb-1.5 block text-sm">Full name</Label>
+                <Input
+                  required
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  placeholder="Aditi Rao"
+                />
+              </div>
+              <div>
+                <Label className="mb-1.5 block text-sm">Phone (optional)</Label>
+                <Input
+                  inputMode="numeric"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="9876543210"
+                />
+              </div>
+            </>
+          )}
           <div>
             <Label className="mb-1.5 block text-sm">Email</Label>
             <Input
@@ -68,7 +113,7 @@ function AuthPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="manager@ngo.org"
+              placeholder="you@example.com"
             />
           </div>
           <div>
@@ -79,7 +124,7 @@ function AuthPage() {
               minLength={8}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
+              placeholder="At least 8 characters"
             />
           </div>
           <Button type="submit" disabled={busy} className="w-full rounded-full" size="lg">
@@ -91,7 +136,7 @@ function AuthPage() {
             className="w-full text-sm text-muted-foreground hover:text-foreground"
           >
             {mode === "signin"
-              ? "First time? Create the admin account →"
+              ? "New here? Create an account →"
               : "Already have an account? Sign in →"}
           </button>
         </form>
