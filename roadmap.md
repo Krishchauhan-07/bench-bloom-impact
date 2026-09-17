@@ -1,0 +1,7 @@
+- [ ] Phase 1: MLP reporting foundation, private storage, authenticated report list
+- [ ] Phase 2: NGO request management and controlled status transitions
+- [ ] Phase 3: Waste journey tracker and data-quality labels
+- [ ] Phase 4: Open collection map and awareness hub
+- [ ] Phase 5: Public PlasticBench bench records and QR pages
+- [ ] Phase 6: Razorpay Test Mode after credentials are supplied
+- [ ] Phase 7: Live impact dashboard, security, accessibility, and regression review
